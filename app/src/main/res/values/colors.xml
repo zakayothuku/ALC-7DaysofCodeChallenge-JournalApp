@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+
+    <color name="haiti">#2C2B32</color>
+    <color name="pumpkin">#F2801D</color>
+    <color name="chocolate">#CF6E1A</color>
+    <color name="manatee">#86868A</color>
+    <color name="richGold">#A95B19</color>
+    <color name="sandyBrown">#F89A57</color>
+
+    <color name="colorPrimary">#2C2B32</color>
+    <color name="colorPrimaryDark">#2C2B32</color>
+    <color name="colorAccent">#F2801D</color>
+    <color name="colorTabsAccent">#CF6E1A</color>
+
+    <!-- Text Color on Dark Background  -->
+    <color name="colorDarkText">#000000</color>
+    <color name="colorDarkTextPrimary">#87000000</color>
+    <color name="colorDarkTextSecondary">#54000000</color>
+    <color name="colorDarkTextHint">#38000000</color>
+    <color name="colorDarkDivider">#12000000</color>
+
+    <!-- Text Color on Light Background  -->
+    <color name="colorLightText">#FFFFFF</color>
+    <color name="colorLightTextPrimary">#87FFFFFF</color>
+    <color name="colorLightTextSecondary">#54FFFFFF</color>
+    <color name="colorLightTextHint">#38FFFFFF</color>
+    <color name="colorLightDivider">#12FFFFFF</color>
+
+    <!-- Dark Icons -->
+    <color name="colorDarkIconActive">#54000000</color>
+    <color name="colorDarkIconInactive">#38000000</color>
+
+    <!-- Light Icons -->
+    <color name="colorLightIconActive">#FFFFFF</color>
+    <color name="colorLightIconInactive">#50FFFFFF</color>
+
+    <!-- Message Backgrounds -->
+    <color name="colorThreadMine">#673AB7</color>
+    <color name="colorThreadTheirs">#FFFFFF</color>
+
+    <!-- Backgrounds -->
+    <color name="colorBackground">#12673AB7</color>
+    <color name="colorBackgroundDark">#20673AB7</color>
+    <color name="colorBackgroundDarker">#15673AB7</color>
+    <color name="colorBackgroundDarkest">#000</color>
+    <color name="colorBackgroundLight">#05673AB7</color>
+    <color name="colorBackgroundWhite">#FFFFFF</color>
+
+    <color name="colorButtonLight">#54673AB7</color>
+
+    <!-- Social Colors -->
+    <color name="colorButtonFacebook">#3b5998</color>
+    <color name="colorButtonGoogle">#dd4b39</color>
+    <color name="colorButtonTwitter">#55acee</color>
+    <color name="colorButtonPlay">#607D8B</color>
+
 </resources>

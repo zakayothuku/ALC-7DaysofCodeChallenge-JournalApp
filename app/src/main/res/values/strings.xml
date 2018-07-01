@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Journal</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_new_entry">NewEntryActivity</string>
+    <string name="title_activity_main">Journal</string>
+    <string name="title_activity_new_entry">New Entry</string>
+    <string name="title_activity_sign_up">Sign up</string>
+    <string name="title_activity_reset_password">Reset Password</string>
     <string name="entry_title">Title</string>
     <string name="entry_content">Start writing</string>
+    <string name="delete_entry">Delete</string>
+    <string name="action_sign_in_google">Sign in with Google</string>
+    <string name="action_logout">Logout</string>
 </resources>

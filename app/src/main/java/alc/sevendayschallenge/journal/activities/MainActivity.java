@@ -2,35 +2,31 @@ package alc.sevendayschallenge.journal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.firestore.DocumentReference;
-
-import java.util.ArrayList;
 
 import alc.sevendayschallenge.journal.R;
-import alc.sevendayschallenge.journal.adapters.EntryAdapter;
+import alc.sevendayschallenge.journal.auth.LoginActivity;
 import alc.sevendayschallenge.journal.models.Entry;
+import alc.sevendayschallenge.journal.viewholders.EntryViewHolder;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView entriesRecyclerView;
-    private EntryAdapter entryAdapter;
-
     public static final String TAG = MainActivity.class.getSimpleName();
-    private ArrayList<Entry> entries = new ArrayList<>();
+
+    private RecyclerView entriesRecyclerView;
+    private FirebaseRecyclerAdapter<Entry, EntryViewHolder> entryFirebaseRecyclerAdapter;
 
     // Reference to Firebase Database
     private DatabaseReference databaseReference;
@@ -44,23 +40,19 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.new_entry_button);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent newEntryIntent = new Intent(MainActivity.this, NewEntryActivity.class);
-                startActivity(newEntryIntent);
-            }
+        fab.setOnClickListener(view -> {
+            Intent newEntryIntent = new Intent(MainActivity.this, EntryActivity.class);
+            startActivity(newEntryIntent);
         });
 
         entriesRecyclerView = findViewById(R.id.entries_recycler_view);
         entriesRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        layoutManager.setReverseLayout(false);
+        layoutManager.setStackFromEnd(false);
+
         entriesRecyclerView.setLayoutManager(layoutManager);
-
-        entryAdapter = new EntryAdapter(entries);
-
-        entriesRecyclerView.setAdapter(entryAdapter);
 
         initDatabase();
         loadJournalEntries();
@@ -74,62 +66,57 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadJournalEntries() {
 
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
-                Entry entry = dataSnapshot.getValue(Entry.class);
-                entries.add(entry);
-                entryAdapter.notifyDataSetChanged();
-            }
+        /*
+         * Query the database for results
+         * */
+        Query entriesQuery = getQuery(databaseReference);
+
+        entryFirebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Entry, EntryViewHolder>(Entry.class, R.layout.entry_list_item,
+                EntryViewHolder.class, entriesQuery) {
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
+            protected void populateViewHolder(EntryViewHolder viewHolder, Entry model, int position) {
 
-                Entry entryOnFB = dataSnapshot.getValue(Entry.class);
+                final DatabaseReference entryReference = getRef(position);
+                final String entryKey = entryReference.getKey();
 
-                // find the item by uid in list
-                int index = entries.indexOf(entryOnFB);
-                Entry entryOnList = entries.get(index);
+                // Bind Entry Model to ViewHolder
+                viewHolder.bindToEntry(model);
 
-                // update list from firebase
-                if (entryOnFB != null) {
-                    entryOnList.setTitle(entryOnFB.getTitle());
-                    entryOnList.setContent(entryOnFB.getContent());
-                }
-                entryAdapter.notifyItemChanged(index);
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                Entry entryOnFB = dataSnapshot.getValue(Entry.class);
-
-                // find the item by uid in list
-                int index = entries.indexOf(entryOnFB);
-
-                if (index > -1) {
-                    entries.remove(index);
-                    entryAdapter.notifyItemRemoved(index);
-                }
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
+                viewHolder.itemView.setOnClickListener(v -> {
+                    Intent editJournalEntryintent = new Intent(MainActivity.this, EntryActivity.class);
+                    editJournalEntryintent.putExtra("entry_key", entryKey);
+                    startActivity(editJournalEntryintent);
+                });
 
             }
+        };
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        entriesRecyclerView.setAdapter(entryFirebaseRecyclerAdapter);
 
-            }
-        });
     }
 
     public Query getQuery(DatabaseReference databaseReference) {
-        databaseReference = databaseReference.child("entries");
         databaseReference.keepSynced(true);
         return databaseReference;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                fAuth.signOut();
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

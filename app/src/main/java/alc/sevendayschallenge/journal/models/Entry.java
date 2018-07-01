@@ -1,5 +1,7 @@
 package alc.sevendayschallenge.journal.models;
 
+import com.google.firebase.database.PropertyName;
+
 import java.util.Date;
 
 public class Entry {
@@ -7,17 +9,20 @@ public class Entry {
     private String key;
     private String title;
     private String content;
-    private String imageUrl;
-    private Long timestamp;
+    @PropertyName("added_at")
+    private Date addedAt;
+    @PropertyName("updated_at")
+    private Date updatedAt;
 
     public Entry() {
     }
 
-    public Entry(String key, String title, String content, Long timestamp) {
+    public Entry(String key, String title, String content, Date addedAt, Date updatedAt) {
         this.key = key;
         this.title = title;
         this.content = content;
-        this.timestamp = timestamp;
+        this.addedAt = addedAt;
+        this.updatedAt = updatedAt;
     }
 
     public String getKey() {
@@ -44,11 +49,19 @@ public class Entry {
         this.content = content;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
+    public Date getAddedAt() {
+        return addedAt;
     }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    public void setAddedAt(Date addedAt) {
+        this.addedAt = addedAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
