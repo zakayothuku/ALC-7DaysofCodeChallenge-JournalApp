@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Journal</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_new_entry">NewEntryActivity</string>
+    <string name="entry_title">Title</string>
+    <string name="entry_content">Start writing</string>
+</resources>
