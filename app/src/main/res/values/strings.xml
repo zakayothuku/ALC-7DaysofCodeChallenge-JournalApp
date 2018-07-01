@@ -9,4 +9,7 @@
     <string name="delete_entry">Delete</string>
     <string name="action_sign_in_google">Sign in with Google</string>
     <string name="action_logout">Logout</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="sign_in">Sign In</string>
 </resources>
